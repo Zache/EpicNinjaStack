@@ -54,6 +54,7 @@ TestResult.xml
 bin
 obj
 Builds/PackageBuild/packages
+build
 
 # Logs and databases #
 ######################
