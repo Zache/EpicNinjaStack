@@ -44,6 +44,8 @@
     <Compile Include="AsyncCommand.cs" />
     <Compile Include="AsyncCommandT.cs" />
     <Compile Include="BaseCommand.cs" />
+    <Compile Include="BasePropertyChanged.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
