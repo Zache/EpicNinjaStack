@@ -128,11 +128,31 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
   -->
+  
+  <Target Name="AfterBuild">
+    <PropertyGroup>
+	  <InstallerIncludePath>$(SolutionDir)build\obj\Release\x86\EpicNinjaStack.Installer\</InstallerIncludePath>
+	</PropertyGroup>
+    <Copy SourceFiles="$(SolutionDir)build\bin\Release\AnyCPU\$(ProjectName)\EpicNinjaStack.Client.exe"
+          DestinationFolder="$(InstallerIncludePath)" 
+          OverwriteReadOnlyFiles="true"></Copy>
+    <Copy SourceFiles="$(SolutionDir)build\bin\Release\AnyCPU\$(ProjectName)\EpicNinjaStack.Domain.dll"
+          DestinationFolder="$(InstallerIncludePath)" 
+          OverwriteReadOnlyFiles="true"></Copy>
+    <Copy SourceFiles="$(SolutionDir)build\bin\Release\AnyCPU\$(ProjectName)\EpicNinjaStack.MVVM.dll"
+          DestinationFolder="$(InstallerIncludePath)" 
+          OverwriteReadOnlyFiles="true"></Copy>
+    <Copy SourceFiles="$(SolutionDir)build\bin\Release\AnyCPU\$(ProjectName)\EpicNinjaStack.DataAccess.dll"
+          DestinationFolder="$(InstallerIncludePath)" 
+          OverwriteReadOnlyFiles="true"></Copy>
+ </Target>
 </Project>
