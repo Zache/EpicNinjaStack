@@ -50,6 +50,8 @@
     <Compile Include="AsyncCommandT.cs" />
     <Compile Include="BaseCommand.cs" />
     <Compile Include="BasePropertyChanged.cs" />
+    <Compile Include="Converters\BaseConverter.cs" />
+    <Compile Include="Converters\PrefixConverter.cs" />
     <Compile Include="DryIoc\Container.cs" />
     <Compile Include="DryIoc\FactoryCompiler.cs" />
     <Compile Include="DryIoc\InternalsVisibleToFactoryCompilerDynamicAssembly.cs" />

@@ -1,8 +1,54 @@
 ﻿<Window x:Class="EpicNinjaStack.Client.Views.Person.PersonCreateEditView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="PersonCreateEditView" Height="300" Width="300">
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:person="clr-namespace:EpicNinjaStack.Client.ViewModels.Person"
+        xmlns:converters="clr-namespace:EpicNinjaStack.MVVM.Converters;assembly=EpicNinjaStack.MVVM"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:domain="clr-namespace:EpicNinjaStack.Domain;assembly=EpicNinjaStack.Domain"
+        mc:Ignorable="d" 
+        Title="{Binding Name, Converter={converters:PrefixConverter}, ConverterParameter='Redigerar Person:'}" 
+        ResizeMode="NoResize" SizeToContent="WidthAndHeight" d:DataContext="{d:DesignInstance person:PersonCreateEditViewModel}">
+    <Window.Resources>
+        <ObjectDataProvider MethodName="GetValues"
+        ObjectType="{x:Type sys:Enum}"
+        x:Key="GenderEnumValues">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="domain:Gender" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" Content="Namn"/>
+            <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding Name}"/>
+            <Label Grid.Row="2" Grid.Column="0" Content="Email"/>
+            <TextBox Grid.Row="3" Grid.Column="0" Text="{Binding Email}"/>
+            <Label Grid.Row="0" Grid.Column="1" Content="Födelsedag"/>
+            <DatePicker Grid.Row="1" Grid.Column="1" SelectedDate="{Binding DateOfBirth}"/>
+            <Label Grid.Row="2" Grid.Column="1" Content="Kön"/>
+            <ComboBox Grid.Row="3" Grid.Column="1" ItemsSource="{Binding Source={StaticResource GenderEnumValues}}" SelectedItem="{Binding Gender}"/>
+        </Grid>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Command="{Binding Save}" CommandParameter="{StaticResource True}" Content="Ok"/>
+            <Button Command="{Binding Save}" CommandParameter="{StaticResource False}" Content="Verkställ"/>
+            <Button Command="{Binding Undo}" Content="Ångra"/>
+            <Button Command="{Binding Cancel}" Content="Avbryt"/>
+        </StackPanel>
     </Grid>
 </Window>
