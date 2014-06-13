@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using EpicNinjaStack.DataAccess;
@@ -6,9 +7,9 @@ using EpicNinjaStack.MVVM;
 
 namespace EpicNinjaStack.Client.ViewModels.Person
 {
-	public class PersonListViewModel : BasePropertyChanged
+	public class PersonListViewModel : BasePropertyChanged,IListViewModel<Domain.Person>
 	{
-		private ObservableCollection<Domain.Person> _persons;
+		private IEnumerable<Domain.Person> _persons;
 		private Domain.Person _selectedPerson;
 
 		private IAsyncCommand _add;
@@ -73,7 +74,7 @@ namespace EpicNinjaStack.Client.ViewModels.Person
 
 		#endregion Commands
 
-		public ObservableCollection<Domain.Person> Persons
+		public IEnumerable<Domain.Person> Items
 		{
 			get { return _persons; }
 			private set
@@ -84,7 +85,7 @@ namespace EpicNinjaStack.Client.ViewModels.Person
 			}
 		}
 
-		public Domain.Person SelectedPerson
+		public Domain.Person SelectedItem
 		{
 			get { return _selectedPerson; }
 			set
@@ -99,14 +100,14 @@ namespace EpicNinjaStack.Client.ViewModels.Person
 
 		private async Task LoadExecuteAsync()
 		{
-			var selectedId = SelectedPerson != null && SelectedPerson.Id.HasValue 
-				? (int?)SelectedPerson.Id.Value 
+			var selectedId = SelectedItem != null && SelectedItem.Id.HasValue 
+				? (int?)SelectedItem.Id.Value 
 				: null;
 
 			var persons = await Task.Run(() => Repository.GetAll());
-			Persons = new ObservableCollection<Domain.Person>(persons);
-			if (selectedId.HasValue && Persons.Count > 0)
-				SelectedPerson = Persons.FirstOrDefault(p => p.Id == selectedId.Value) ?? Persons.First();
+			Items = new ObservableCollection<Domain.Person>(persons);
+			if (selectedId.HasValue && Items.Any())
+				SelectedItem = Items.FirstOrDefault(p => p.Id == selectedId.Value) ?? Items.First();
 		}
 
 		private async Task AddExecuteAsync()
@@ -116,7 +117,7 @@ namespace EpicNinjaStack.Client.ViewModels.Person
 
 		private bool CanEdit()
 		{
-			return SelectedPerson != null && SelectedPerson.Id.HasValue;
+			return SelectedItem != null && SelectedItem.Id.HasValue;
 		}
 
 		private async Task EditExecuteAsync()
@@ -126,7 +127,7 @@ namespace EpicNinjaStack.Client.ViewModels.Person
 
 		private bool CanRemove()
 		{
-			return SelectedPerson != null && SelectedPerson.Id.HasValue;
+			return SelectedItem != null && SelectedItem.Id.HasValue;
 		}
 
 		private async Task RemoveExecuteAsync()
