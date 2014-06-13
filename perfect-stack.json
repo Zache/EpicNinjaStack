@@ -1,0 +1,30 @@
+{
+  "name": "perfect-stack-template",
+  "knowabungaDisplayName": "Perfect Stack Template",
+  "version": "0.0.1",
+  "description": "An example config to demonstrate the configuration for the perfect stack",
+  "license" : "MIT",
+  "contributors": [{
+      "name": "Per Westerlund",
+      "email": "per.westerlund@tretton37.com"
+    }, {
+      "name": "Zacharias Björngren",
+      "email": "z@tretton37.com"
+    }
+  ],
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/tretton37/perfect-stack-template.git"
+  },
+  "homepage": "git@github.com:Zache/EpicNinjaStack.git",
+  "keywords": ["template", "static"],
+  "_knowabungaCategories": [
+    "web-application", 
+    "mobile-web",
+    "single-page-app",
+    "background-job",
+    "desktop-app",
+    "windows-phone"
+  ],
+  "knowabungaCategory": "desktop-app"
+}
