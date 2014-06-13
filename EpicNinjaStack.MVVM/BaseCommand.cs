@@ -5,9 +5,9 @@ namespace EpicNinjaStack.MVVM
 {
 	public abstract class BaseCommand : ICommand
 	{
-		public abstract bool CanExecute(object parameter);
-		public abstract void Execute(object parameter);
-
+		public abstract bool CanExecute(object parameter = null);
+		public abstract void Execute(object parameter = null);
+		
 		public event EventHandler CanExecuteChanged
 		{
 			add { CommandManager.RequerySuggested += value; }
