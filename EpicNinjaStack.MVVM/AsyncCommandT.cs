@@ -45,7 +45,7 @@ namespace EpicNinjaStack.MVVM
 			return !_isExecuting && _canExecute();
 		}
 
-		public async override void Execute(object parameter)
+		public async override void Execute(object parameter = null)
 		{
 			await ExecuteAsync((T)parameter);
 		}
