@@ -10,6 +10,7 @@ namespace EpicNinjaStack.MVVM
 	public interface ICreateEditViewModel<T> : IEditableObject
 	{
 		bool IsDirty { get; }
-		int? Id { get; set; }
+		int? Id { get; }
+		IAsyncCommand<int?> Load { get; }
 	}
 }

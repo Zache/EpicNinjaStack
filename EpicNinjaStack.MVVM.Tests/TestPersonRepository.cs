@@ -10,7 +10,10 @@ namespace EpicNinjaStack.MVVM.Tests
 {
 	public class TestPersonRepository : IRepository<Person>
 	{
-		private readonly Dictionary<int, Person> _persons = new Dictionary<int, Person>();
+		private readonly Dictionary<int, Person> _persons = new Dictionary<int, Person>
+		{
+			{ 1, new Person { Name = "Zacharias", DateOfBirth = new DateTime(1985,09,21), Gender = Gender.Yes, Email = "zacharias@tretton37.com"} }
+		};
 
 		public Task<Person> Get(int id)
 		{

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,19 +10,20 @@ namespace EpicNinjaStack.Client.ViewModels.Person
 {
 	public class PersonListViewModel : BasePropertyChanged,IListViewModel<Domain.Person>
 	{
-		private IEnumerable<Domain.Person> _persons;
+		private ObservableCollection<Domain.Person> _persons;
 		private Domain.Person _selectedPerson;
 
 		private IAsyncCommand _add;
 		private IAsyncCommand _edit;
 		private IAsyncCommand _remove;
-		private IAsyncCommand _load;
-
-		public PersonListViewModel(IRepository<Domain.Person> repository)
+		private IAsyncCommand<int?> _load;
+		
+		public PersonListViewModel(INavigator navigator, IRepository<Domain.Person> repository)
 		{
+			Navigator = navigator;
 			Repository = repository;
-
-			Load = new AsyncCommand(LoadExecuteAsync);
+			
+			Load = new AsyncCommand<int?>(LoadExecuteAsync);
 
 			Add = new AsyncCommand(AddExecuteAsync);
 			Edit = new AsyncCommand(EditExecuteAsync, CanEdit);
@@ -30,7 +32,7 @@ namespace EpicNinjaStack.Client.ViewModels.Person
 
 		#region Commands
 
-		public IAsyncCommand Load
+		public IAsyncCommand<int?> Load
 		{
 			get { return _load; }
 			private set
@@ -76,7 +78,7 @@ namespace EpicNinjaStack.Client.ViewModels.Person
 
 		#endregion Commands
 
-		public IEnumerable<Domain.Person> Items
+		public ObservableCollection<Domain.Person> Items
 		{
 			get { return _persons; }
 			private set
@@ -99,13 +101,16 @@ namespace EpicNinjaStack.Client.ViewModels.Person
 		}
 
 		private IRepository<Domain.Person> Repository { get; set; }
+		private INavigator Navigator { get; set; }
 
-		private async Task LoadExecuteAsync()
+		private async Task LoadExecuteAsync(int? selectId = null)
 		{
-			var selectedId = SelectedItem != null && SelectedItem.Id.HasValue 
-				? (int?)SelectedItem.Id.Value 
-				: null;
-
+			var selectedId = selectId.HasValue 
+				? selectId.Value
+				: SelectedItem != null && SelectedItem.Id.HasValue 
+					? (int?)SelectedItem.Id.Value 
+					: null;
+			
 			var persons = await Task.Run(() => Repository.GetAll());
 			Items = new ObservableCollection<Domain.Person>(persons);
 			if (selectedId.HasValue && Items.Any())
@@ -114,7 +119,9 @@ namespace EpicNinjaStack.Client.ViewModels.Person
 
 		private async Task AddExecuteAsync()
 		{
-
+			var newId = await Navigator.AddAsync<Domain.Person>();
+			if (newId.HasValue)
+				await Load.ExecuteAsync(newId.Value);
 		}
 
 		private bool CanEdit()
@@ -124,7 +131,12 @@ namespace EpicNinjaStack.Client.ViewModels.Person
 
 		private async Task EditExecuteAsync()
 		{
+			if(SelectedItem== null || !SelectedItem.Id.HasValue)
+				throw new InvalidOperationException("Must have a selected item with an Id to edit!");
 
+			var edited = await Navigator.EditAsync<Domain.Person>(SelectedItem.Id.Value);
+			if (edited)
+				await Load.ExecuteAsync(SelectedItem.Id.Value);
 		}
 
 		private bool CanRemove()
@@ -134,7 +146,11 @@ namespace EpicNinjaStack.Client.ViewModels.Person
 
 		private async Task RemoveExecuteAsync()
 		{
+			if (SelectedItem == null || !SelectedItem.Id.HasValue)
+				throw new InvalidOperationException("Must have a selected item with an Id to delete!");
 
+			await Repository.Delete(SelectedItem.Id.Value);
+			await Load.ExecuteAsync(null);
 		}
 	}
 }

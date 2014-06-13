@@ -1,8 +1,11 @@
-﻿namespace EpicNinjaStack.MVVM
+﻿using System.Threading.Tasks;
+
+namespace EpicNinjaStack.MVVM
 {
 	public interface INavigator
 	{
-		int? Add<T>();
-		bool Edit<T>(int id);
+		Task<int?> AddAsync<T>();
+		Task<bool> EditAsync<T>(int id);
+		void Close(object caller, bool dialogResult);
 	}
 }

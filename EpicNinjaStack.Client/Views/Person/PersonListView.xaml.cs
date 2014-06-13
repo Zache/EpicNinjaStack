@@ -13,14 +13,13 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using EpicNinjaStack.Client.ViewModels;
-using UserControl = System.Windows.Controls.UserControl;
 
 namespace EpicNinjaStack.Client.Views.Person
 {
 	/// <summary>
 	/// Interaction logic for PersonListView.xaml
 	/// </summary>
-	public partial class PersonListView : UserControl
+	public partial class PersonListView
 	{
 		private IListViewModel<Domain.Person> ViewModel
 		{

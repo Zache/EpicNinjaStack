@@ -10,11 +10,10 @@ namespace EpicNinjaStack.Client.ViewModels.Person
 {
 	public class PersonCreateEditViewModel : BasePropertyChanged, ICreateEditViewModel<Domain.Person>
 	{
-		private int? _id;
 		private Domain.Person _person;
 
 		private IAsyncCommand<bool> _save;
-		private IAsyncCommand _load;
+		private IAsyncCommand<int?> _load;
 		private ICommand _cancel;
 		private ICommand _undo;
 
@@ -28,30 +27,24 @@ namespace EpicNinjaStack.Client.ViewModels.Person
 		static PersonCreateEditViewModel()
 		{
 			Mapper.CreateMap<Domain.Person, PersonCreateEditViewModel>();
+			Mapper.CreateMap<PersonCreateEditViewModel, Domain.Person>();
 		}
 
-		public PersonCreateEditViewModel(int? id,INavigator navigator, IRepository<Domain.Person> repository)
+		public PersonCreateEditViewModel(INavigator navigator, IRepository<Domain.Person> repository)
 		{
 			Navigator = navigator;
-			Id = id;
 			Repository = repository;
 
-			Load = new AsyncCommand(LoadExecuteAsync, CanLoad);
+			Load = new AsyncCommand<int?>(LoadExecuteAsync, CanLoad);
 			Save = new AsyncCommand<bool>(SaveExecuteAsync, CanSave);
 
 			Cancel = new SyncCommand(CancelExecute);
-			Undo = new SyncCommand(UndoExecute);
+			Undo = new SyncCommand(UndoExecute, CanUndo);
 		}
 
 		public int? Id
 		{
-			get { return _id; }
-			set
-			{
-				if (value == _id) return;
-				_id = value;
-				RaisePropertyChanged();
-			}
+			get { return _person.Id; }
 		}
 
 		public string Name
@@ -122,7 +115,7 @@ namespace EpicNinjaStack.Client.ViewModels.Person
 			}
 		}
 
-		public IAsyncCommand Load
+		public IAsyncCommand<int?> Load
 		{
 			get { return _load; }
 			private set
@@ -160,9 +153,9 @@ namespace EpicNinjaStack.Client.ViewModels.Person
 		private IRepository<Domain.Person> Repository { get; set; }
 		private INavigator Navigator { get; set; }
 
-		private void Close()
+		private void Close(bool dialogResult)
 		{
-
+			Navigator.Close(this, dialogResult);
 		}
 
 		private bool CanSave()
@@ -173,10 +166,10 @@ namespace EpicNinjaStack.Client.ViewModels.Person
 		private async Task SaveExecuteAsync(bool close = true)
 		{
 			EndEdit();
-			Id = await Task.Run(() => Repository.Save(_person));
+			await Task.Run(() => Repository.Save(_person));
 
 			if (close)
-				Close();
+				Close(true);
 		}
 
 		private bool CanLoad()
@@ -184,19 +177,23 @@ namespace EpicNinjaStack.Client.ViewModels.Person
 			return Id.HasValue;
 		}
 
-		private async Task LoadExecuteAsync()
+		private async Task LoadExecuteAsync(int? id)
 		{
-			if (!Id.HasValue)
-				throw new InvalidOperationException("Cannot load without Id!");
-
-			_person = await Task.Run(() => Repository.Get(Id.Value));
+			if (id.HasValue)
+				_person = await Task.Run(() => Repository.Get(id.Value));
+			else
+				_person = new Domain.Person
+				{
+					DateOfBirth = DateTime.UtcNow,
+					Gender = Gender.Maybe
+				};
 			BeginEdit();
 		}
 
 		private void CancelExecute()
 		{
 			CancelEdit();
-			Close();
+			Close(false);
 		}
 
 		private bool CanUndo()
