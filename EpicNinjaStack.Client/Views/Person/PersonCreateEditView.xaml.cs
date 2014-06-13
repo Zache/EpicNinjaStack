@@ -39,10 +39,14 @@ namespace EpicNinjaStack.Client.Views.Person
 			get { return ViewModel.Id; }
 		}
 
-		int IEdit<Domain.Person>.Id
+		public async Task LoadAsync(int id)
 		{
-			get { return ViewModel.Id.Value; }
-			set { ViewModel.Id = value; }
+			await ViewModel.Load.ExecuteAsync(id);
+		}
+
+		public async Task LoadAsync()
+		{
+			await ViewModel.Load.ExecuteAsync(null);
 		}
 	}
 }

@@ -9,5 +9,6 @@ namespace EpicNinjaStack.MVVM
 	public interface IAdd<T>
 	{
 		int? Id { get; }
+		Task LoadAsync();
 	}
 }

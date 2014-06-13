@@ -1,7 +1,9 @@
-﻿namespace EpicNinjaStack.MVVM
+﻿using System.Threading.Tasks;
+
+namespace EpicNinjaStack.MVVM
 {
 	public interface IEdit<T>
 	{
-		int Id { get; set; }
+		Task LoadAsync(int id);
 	}
 }
