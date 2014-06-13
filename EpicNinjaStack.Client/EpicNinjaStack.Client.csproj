@@ -13,8 +13,8 @@
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
-	<OutputPath>..\build\bin\$(Configuration)\$(Platform)\$(AssemblyName)</OutputPath>
-	<BaseIntermediateOutputPath>..\build\obj</BaseIntermediateOutputPath>
+    <OutputPath>..\build\bin\$(Configuration)\$(Platform)\$(AssemblyName)</OutputPath>
+    <BaseIntermediateOutputPath>..\build\obj</BaseIntermediateOutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)\$(Configuration)\$(Platform)\$(AssemblyName)</IntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -54,6 +54,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModels\Person\PersonCreateEditViewModel.cs" />
+    <Compile Include="ViewModels\Person\PersonListViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -93,6 +95,23 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EpicNinjaStack.DataAccess\EpicNinjaStack.DataAccess.csproj">
+      <Project>{422AFAED-5DBB-4EA9-94DC-F7EC23F2DD38}</Project>
+      <Name>EpicNinjaStack.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EpicNinjaStack.Domain\EpicNinjaStack.Domain.csproj">
+      <Project>{1818218F-5340-4D7F-94B2-513BA4208C36}</Project>
+      <Name>EpicNinjaStack.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EpicNinjaStack.MVVM\EpicNinjaStack.MVVM.csproj">
+      <Project>{FB146ECE-5DF9-4575-A85D-B415CFFAA3FA}</Project>
+      <Name>EpicNinjaStack.MVVM</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Person\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -7,12 +7,17 @@ using System.Windows.Input;
 
 namespace EpicNinjaStack.MVVM
 {
-	public class AsyncCommand<T> : BaseCommand
+	public class AsyncCommand<T> : BaseCommand, IAsyncCommand<T>
 	{
 		private readonly Func<T, Task> _execute;
 		private readonly Func<bool> _canExecute;
 
 		private bool _isExecuting;
+
+		public AsyncCommand(Func<T, Task> execute)
+			: this(execute, () => true)
+		{
+		}
 
 		public AsyncCommand(Func<T, Task> execute, Func<bool> canExecute)
 		{
