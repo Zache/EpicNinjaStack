@@ -18,7 +18,9 @@ namespace EpicNinjaStack.Client.ViewModels.Person
 		private IAsyncCommand _load;
 
 		public PersonListViewModel(IRepository<Domain.Person> repository)
-		{ 
+		{
+			Repository = repository;
+
 			Load = new AsyncCommand(LoadExecuteAsync);
 
 			Add = new AsyncCommand(AddExecuteAsync);
