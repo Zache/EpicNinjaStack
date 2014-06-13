@@ -13,9 +13,10 @@ namespace EpicNinjaStack.Client.ViewModels.Person
 		private IAsyncCommand<bool> _save;
 		private IAsyncCommand _load;
 
-		public PersonCreateEditViewModel(int? id)
+		public PersonCreateEditViewModel(int? id, IRepository<Domain.Person> repository)
 		{
 			_id = id;
+			Repository = repository;
 
 			Load = new AsyncCommand(LoadExecuteAsync, CanLoad);
 			Save = new AsyncCommand<bool>(SaveExecuteAsync);
@@ -47,7 +48,7 @@ namespace EpicNinjaStack.Client.ViewModels.Person
 
 		#endregion Commands
 
-		protected virtual IRepository<Domain.Person> Repository { get; set; }
+		private IRepository<Domain.Person> Repository { get; set; }
 
 		private void Close()
 		{

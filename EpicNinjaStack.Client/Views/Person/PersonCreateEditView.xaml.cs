@@ -11,17 +11,28 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using EpicNinjaStack.MVVM;
 
 namespace EpicNinjaStack.Client.Views.Person
 {
 	/// <summary>
 	/// Interaction logic for PersonCreateEditView.xaml
 	/// </summary>
-	public partial class PersonCreateEditView : Window
+	public partial class PersonCreateEditView : IAdd<Domain.Person>, IEdit<Domain.Person>
 	{
 		public PersonCreateEditView()
 		{
 			InitializeComponent();
 		}
+
+		int? IAdd<Domain.Person>.Id
+		{
+			get
+			{
+				throw new NotImplementedException();
+			}
+		}
+
+		int IEdit<Domain.Person>.Id { get; set; }
 	}
 }
