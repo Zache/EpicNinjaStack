@@ -10,7 +10,7 @@ namespace EpicNinjaStack.Client.ViewModels
 {
 	public interface IListViewModel<T> : INotifyPropertyChanged
 	{
-		IEnumerable<T> Items { get; }
+		ObservableCollection<T> Items { get; }
 		T SelectedItem { get; set; }
 	}
 }

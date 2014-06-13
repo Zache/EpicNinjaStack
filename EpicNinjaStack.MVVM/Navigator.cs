@@ -10,7 +10,9 @@ namespace EpicNinjaStack.MVVM
 {
 	public class Navigator : INavigator
 	{
-		private readonly IRegistry _iocContainer;
+		private IRegistry _iocContainer;
+
+		private Dictionary<object, Window> _windows = new Dictionary<object, Window>();
 
 		public Navigator(IRegistry iocContainer)
 		{
@@ -22,8 +24,10 @@ namespace EpicNinjaStack.MVVM
 			var view = _iocContainer.Resolve<IAdd<T>>();
 			await view.LoadAsync();
 			var window = view as Window;
-			if(window == null)
+			if (window == null)
 				throw new Exception("View that was not a window!!");
+
+			_windows.Add(view.DataContext, window);
 			window.ShowDialog();
 			return view.Id;
 		}
@@ -35,6 +39,8 @@ namespace EpicNinjaStack.MVVM
 			var window = view as Window;
 			if (window == null)
 				throw new Exception("View that was not a window!!");
+
+			_windows.Add(view.DataContext, window);
 			var dialogResult = window.ShowDialog();
 
 			return dialogResult.HasValue && dialogResult.Value;
@@ -42,7 +48,8 @@ namespace EpicNinjaStack.MVVM
 
 		public void Close(object caller, bool dialogResult)
 		{
-			throw new NotImplementedException();
+			if (_windows.ContainsKey(caller))
+				_windows[caller].DialogResult = dialogResult;
 		}
 	}
 }

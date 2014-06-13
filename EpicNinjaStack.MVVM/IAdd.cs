@@ -8,6 +8,7 @@ namespace EpicNinjaStack.MVVM
 {
 	public interface IAdd<T>
 	{
+		object DataContext { get; }
 		int? Id { get; }
 		Task LoadAsync();
 	}

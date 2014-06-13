@@ -10,7 +10,7 @@ namespace EpicNinjaStack.Client.ViewModels.Person
 {
 	public class PersonListViewModel : BasePropertyChanged,IListViewModel<Domain.Person>
 	{
-		private IEnumerable<Domain.Person> _persons;
+		private ObservableCollection<Domain.Person> _persons;
 		private Domain.Person _selectedPerson;
 
 		private IAsyncCommand _add;
@@ -78,7 +78,7 @@ namespace EpicNinjaStack.Client.ViewModels.Person
 
 		#endregion Commands
 
-		public IEnumerable<Domain.Person> Items
+		public ObservableCollection<Domain.Person> Items
 		{
 			get { return _persons; }
 			private set
@@ -150,6 +150,7 @@ namespace EpicNinjaStack.Client.ViewModels.Person
 				throw new InvalidOperationException("Must have a selected item with an Id to delete!");
 
 			await Repository.Delete(SelectedItem.Id.Value);
+			await Load.ExecuteAsync(null);
 		}
 	}
 }

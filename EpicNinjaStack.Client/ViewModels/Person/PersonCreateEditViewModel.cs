@@ -27,6 +27,7 @@ namespace EpicNinjaStack.Client.ViewModels.Person
 		static PersonCreateEditViewModel()
 		{
 			Mapper.CreateMap<Domain.Person, PersonCreateEditViewModel>();
+			Mapper.CreateMap<PersonCreateEditViewModel, Domain.Person>();
 		}
 
 		public PersonCreateEditViewModel(INavigator navigator, IRepository<Domain.Person> repository)
